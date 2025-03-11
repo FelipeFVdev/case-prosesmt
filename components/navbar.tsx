@@ -142,7 +142,7 @@ const Navbar = ({
     <section className="p-4">
       <div className="max-w-screen container">
         {/* Desktop Menu */}
-        <nav className="hidden justify-between lg:flex">
+        <nav className="hidden justify-between items-center lg:flex">
           <div className="flex items-center gap-6">
             <a href={logo.url} className="flex items-center gap-2">
               <img src={logo.src} className="w-40" alt={logo.alt} />
