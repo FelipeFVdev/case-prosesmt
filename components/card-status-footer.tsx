@@ -74,9 +74,9 @@ export const CardStatusFooter = () => {
 
   const handleButton = () => {
     if (date) {
-      router.push(`/states/date?params=${format(date, "yyyyMMdd")}`);
+      router.push(`/status/date?params=${format(date, "yyyyMMdd")}`);
     } else {
-      router.push(`/states/${speficState}`);
+      router.push(`/status/${speficState}`);
     }
   };
 

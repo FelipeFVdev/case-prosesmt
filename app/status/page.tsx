@@ -5,7 +5,7 @@ import { CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useQuery } from "@tanstack/react-query";
 
-const States = () => {
+const Status = () => {
   // refetch and caching
   const {
     data: dataStates = [],
@@ -39,4 +39,4 @@ const States = () => {
   );
 };
 
-export default States;
+export default Status;

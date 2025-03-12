@@ -5,7 +5,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export default function StatesLayout({
+export default function StatusLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
