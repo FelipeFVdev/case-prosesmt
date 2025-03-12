@@ -120,7 +120,7 @@ export function JsonCard({
   return (
     <Card className={cn("border gap-0 ", className)}>
       <CardHeader className="bg-muted rounded-t-lg flex flex-row items-center justify-between pt-3">
-        <CardTitle className="text-lg font-medium">View JSON Data</CardTitle>
+        <CardTitle className="text-lg font-medium">JSON Data</CardTitle>
         <Button
           variant="ghost"
           size="sm"
@@ -140,7 +140,7 @@ export function JsonCard({
           )}
         </Button>
       </CardHeader>
-      <CardContent className="p-4 rounded-t-lg bg-muted font-mono text-sm overflow-auto max-h-[600px]">
+      <CardContent className="p-4 rounded-b-lg bg-muted font-mono text-sm overflow-auto max-h-[600px]">
         {renderValue(data, "root")}
       </CardContent>
     </Card>

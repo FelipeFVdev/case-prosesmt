@@ -21,11 +21,9 @@ interface JsonModalProps {
 export function JsonModal({
   data,
   title = "JSON Data",
-  buttonText = "View JSON Data",
+  buttonText = "Visualizar JSON Data",
 }: JsonModalProps) {
   const [open, setOpen] = useState(false);
-
-  console.log(data);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

@@ -42,7 +42,7 @@ const StatusForm = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     setJsonData({
       uid: "99",
       uf: "xx",

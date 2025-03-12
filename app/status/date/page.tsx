@@ -7,7 +7,6 @@ const DateSpecificState = () => {
   const searchParams = useSearchParams();
   const search = searchParams.get("params");
 
-  console.log(search);
   // refetch and caching
   const {
     data: dataStates = [],
