@@ -12,7 +12,7 @@ export default function StatusLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="mt-4 px-8 flex flex-col lg:grid lg:grid-cols-2 items-center justify-center gap-4">
+    <div className="mt-4 px-8 flex flex-col lg:grid lg:grid-cols-2 items-start justify-center gap-8">
       <Card>
         <CardHeader>
           <CardTitle>Status Atual da COVID 19</CardTitle>

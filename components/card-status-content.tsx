@@ -8,6 +8,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Separator } from "./ui/separator";
 import { Skeleton } from "./ui/skeleton";
+import { object } from "zod";
 
 type CardStatusContentProps = {
   dataStates: Array<{
@@ -27,6 +28,10 @@ export const CardStatusContent = ({
   isLoading,
   isError,
 }: CardStatusContentProps) => {
+  const handleNumberFormat = (number: number) => {
+    return new Intl.NumberFormat("pt-BR").format(number);
+  };
+
   if (isLoading) {
     return (
       <>
@@ -40,22 +45,22 @@ export const CardStatusContent = ({
   }
   if (isError) {
     return (
-      <div className="flex items-center justify-center p-4">
-        <p className="text-sm text-muted-foreground">
-          Alguma coisa deu errao. Por favor tente novamente mais tarde!
-        </p>
+      <div className="col-span-3">
+        <div className="flex items-center justify-center p-4">
+          <p className="text-sm text-muted-foreground">
+            Alguma coisa deu errao. Por favor tente novamente mais tarde!
+          </p>
+        </div>
       </div>
     );
   }
 
-  const handleNumberFormat = (number: number) => {
-    return new Intl.NumberFormat("pt-BR").format(number);
-  };
+  console.log(!Array.isArray(dataStates));
 
-  return (
-    <>
-      {dataStates.length > 0 ? (
-        dataStates.map((item, index) => (
+  if (Object.keys(dataStates).length > 9) {
+    return (
+      <>
+        {dataStates.map((item, index) => (
           <Card key={index} className=" gap-4 py-4">
             <CardHeader>
               <CardTitle>{item.state || item.country}</CardTitle>
@@ -95,8 +100,12 @@ export const CardStatusContent = ({
               </TooltipProvider>
             </CardContent>
           </Card>
-        ))
-      ) : (
+        ))}
+      </>
+    );
+  } else if (!Array.isArray(dataStates)) {
+    return (
+      <>
         <Card className="gap-4 py-4">
           <CardHeader>
             <CardTitle>{dataStates.state}</CardTitle>
@@ -133,7 +142,15 @@ export const CardStatusContent = ({
             </TooltipProvider>
           </CardContent>
         </Card>
-      )}
-    </>
+      </>
+    );
+  }
+
+  return (
+    <div className="col-span-3">
+      <div className="flex items-center justify-center p-4">
+        <p className="text-sm text-muted-foreground">Dados indisponíveis</p>
+      </div>
+    </div>
   );
 };
