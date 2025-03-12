@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { DateSpecified } from "../components/date-specified";
+import { DateSpecified } from "../components/status-date-specified";
 import { useSearchParams } from "next/navigation";
 
 const DateSpecificState = () => {

@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { StateSpecified } from "../components/state-specified";
+import { StateSpecified } from "../components/status-state-specified";
 import { use } from "react";
 
 const SpecificState = ({ params }: { params: Promise<{ slug: string }> }) => {
