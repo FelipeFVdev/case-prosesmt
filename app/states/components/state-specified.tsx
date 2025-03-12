@@ -1,8 +1,7 @@
 "use client";
 
-import CardStatusContent from "@/components/card-status-content";
+import { CardStatusContent } from "@/components/card-status-content";
 import { CardContent } from "@/components/ui/card";
-import { useQueryClient } from "@tanstack/react-query";
 import { CardStatusFooter } from "@/components/card-status-footer";
 
 type StateSpecifiedProps = {
@@ -15,10 +14,6 @@ export const StateSpecified = ({
   isLoading,
   isError,
 }: StateSpecifiedProps) => {
-  const queryClient = useQueryClient();
-
-  const dataStates: any[] = queryClient.getQueryData(["states"]) || [];
-
   return (
     <>
       <CardContent>

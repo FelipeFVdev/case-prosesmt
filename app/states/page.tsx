@@ -1,5 +1,5 @@
 "use client";
-import CardStatusContent from "@/components/card-status-content";
+import { CardStatusContent } from "@/components/card-status-content";
 import { CardStatusFooter } from "@/components/card-status-footer";
 import { CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";

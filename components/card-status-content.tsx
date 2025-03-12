@@ -1,10 +1,4 @@
-import {
-  BiohazardIcon,
-  CircleDashedIcon,
-  LoaderCircleIcon,
-  SkullIcon,
-} from "lucide-react";
-import { ScrollArea } from "./ui/scroll-area";
+import { BiohazardIcon, LoaderCircleIcon, SkullIcon } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -20,7 +14,7 @@ type CardStatusContentProps = {
   isError: boolean;
 };
 
-const CardStatusContent = ({
+export const CardStatusContent = ({
   dataStates,
   isLoading,
   isError,
@@ -52,14 +46,35 @@ const CardStatusContent = ({
             </CardHeader>
             <Separator />
             <CardContent className="flex flex-col gap-2">
-              <p className="flex items-center gap-2">
-                <SkullIcon className="size-4" color="red" />
-                {handleNumberFormat(item.cases + item.deaths + item.suspects)}
-              </p>
-              <p className="flex items-center gap-2">
-                <BiohazardIcon className="size-4" />
-                {handleNumberFormat(item.cases + item.deaths + item.suspects)}
-              </p>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <p className="flex items-center gap-2 hover:cursor-default hover:font-semibold">
+                      <SkullIcon className="size-4" color="red" />
+                      {handleNumberFormat(item.deaths)}
+                    </p>
+                  </TooltipTrigger>
+                  <TooltipContent side="left">
+                    <p>Mortes</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <p className="flex items-center gap-2 hover:cursor-default hover:font-semibold">
+                      <BiohazardIcon className="size-4" />
+                      {handleNumberFormat(
+                        item.cases + item.deaths + item.suspects
+                      )}
+                    </p>
+                  </TooltipTrigger>
+                  <TooltipContent side="left">
+                    <p>Total (Casos + Mortes + Suspeitos)</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </CardContent>
           </Card>
         ))
@@ -70,23 +85,37 @@ const CardStatusContent = ({
           </CardHeader>
           <Separator />
           <CardContent className="flex flex-col gap-2">
-            <p className="flex items-center gap-2">
-              <SkullIcon className="size-4" color="red" />
-              {handleNumberFormat(
-                dataStates.cases + dataStates.deaths + dataStates.suspects
-              )}
-            </p>
-            <p className="flex items-center gap-2">
-              <BiohazardIcon className="size-4" />
-              {handleNumberFormat(
-                dataStates.cases + dataStates.deaths + dataStates.suspects
-              )}
-            </p>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <p className="flex items-center gap-2 hover:cursor-default hover:font-semibold">
+                    <SkullIcon className="size-4" color="red" />
+                    {handleNumberFormat(dataStates.deaths)}
+                  </p>
+                </TooltipTrigger>
+                <TooltipContent side="left">
+                  <p>Mortes</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <p className="flex items-center gap-2 hover:cursor-default hover:font-semibold">
+                    <BiohazardIcon className="size-4" />
+                    {handleNumberFormat(
+                      dataStates.cases + dataStates.deaths + dataStates.suspects
+                    )}
+                  </p>
+                </TooltipTrigger>
+                <TooltipContent side="left">
+                  <p>Total (Casos + Mortes + Suspeitos)</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </CardContent>
         </Card>
       )}
     </>
   );
 };
-
-export default CardStatusContent;
