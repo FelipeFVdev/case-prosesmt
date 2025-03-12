@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { JsonModal } from "@/components/json.modal";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   stateBrazil: z.string().min(2),
@@ -54,6 +55,8 @@ const StatusForm = () => {
       createdAt: values.createdAt,
       updatedAt: values.updatedAt,
     });
+
+    toast.success("Formulario enviado com sucesso!");
 
     console.log(values);
   };

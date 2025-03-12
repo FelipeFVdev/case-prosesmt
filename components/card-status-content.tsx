@@ -1,4 +1,4 @@
-import { BiohazardIcon, LoaderCircleIcon, SkullIcon } from "lucide-react";
+import { BiohazardIcon, SkullIcon } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -7,6 +7,7 @@ import {
 } from "./ui/tooltip";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Separator } from "./ui/separator";
+import { Skeleton } from "./ui/skeleton";
 
 type CardStatusContentProps = {
   dataStates: Array<{
@@ -27,13 +28,21 @@ export const CardStatusContent = ({
   isError,
 }: CardStatusContentProps) => {
   if (isLoading) {
-    return <LoaderCircleIcon className="animate-spin" />;
+    return (
+      <>
+        {dataStates.map((data, index) => (
+          <div key={index} className="flex flex-col gap-4">
+            <Skeleton className="h-35 w-50" />
+          </div>
+        ))}
+      </>
+    );
   }
   if (isError) {
     return (
       <div className="flex items-center justify-center p-4">
         <p className="text-sm text-muted-foreground">
-          Something went wrong. Try again later!
+          Alguma coisa deu errao. Por favor tente novamente mais tarde!
         </p>
       </div>
     );
