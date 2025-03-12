@@ -30,7 +30,7 @@ const StatusWorld = () => {
 
   return (
     <>
-      <ScrollArea className="h-[450px]">
+      <ScrollArea className="lg:h-[450px] h-80">
         <CardContent className="grid grid-cols-1 lg:grid-cols-3 gap-4 ">
           <CardStatusContent
             dataStates={dataStates}

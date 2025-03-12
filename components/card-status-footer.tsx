@@ -28,7 +28,7 @@ export const CardStatusFooter = () => {
   const [date, setDate] = useState<Date | undefined>();
   const [inputValue, setInputValue] = useState<string>("");
 
-  // Estado para controlar o Select de Brasil ou Mundo
+  // Estado para controlar o Select de Brasil ou Global
   const [region, setRegion] = useState<string>("brazil");
 
   // Update input value when date changes from calendar
@@ -86,28 +86,7 @@ export const CardStatusFooter = () => {
   };
 
   return (
-    <CardFooter className="flex gap-2">
-      <div className="relative ">
-        <Input
-          id="date"
-          value={inputValue}
-          onChange={(e) => {
-            const formatted = formatInput(e.target.value);
-            if (formatted.length <= 10) {
-              handleInputChange({
-                ...e,
-                target: { ...e.target, value: formatted },
-              } as React.ChangeEvent<HTMLInputElement>);
-            }
-          }}
-          placeholder="dd / mm / aaaa"
-          className="w-full"
-          disabled={!!speficState || region !== "brazil"} // Disable Input if speficState has a value
-        />
-        <div className="absolute right-0 top-0.5 h-full px-3 py-2">
-          <CalendarIcon className="size-4 text-muted-foreground" />
-        </div>
-      </div>
+    <CardFooter className="lg:flex grid gap-2">
       <Select
         onValueChange={(value) => {
           const selectedState = dataStates.find((item) => item.state === value);
@@ -129,6 +108,29 @@ export const CardStatusFooter = () => {
           </SelectGroup>
         </SelectContent>
       </Select>
+
+      <div className="relative ">
+        <Input
+          id="date"
+          value={inputValue}
+          onChange={(e) => {
+            const formatted = formatInput(e.target.value);
+            if (formatted.length <= 10) {
+              handleInputChange({
+                ...e,
+                target: { ...e.target, value: formatted },
+              } as React.ChangeEvent<HTMLInputElement>);
+            }
+          }}
+          placeholder="dd / mm / aaaa"
+          className="w-full"
+          disabled={!!speficState || region !== "brazil"} // Disable Input if speficState has a value
+        />
+        <div className="absolute right-0 top-0.5 h-full px-3 py-2">
+          <CalendarIcon className="size-4 text-muted-foreground" />
+        </div>
+      </div>
+
       <Select
         value={region} // Control the Select value with region
         onValueChange={(value) => setRegion(value)}
@@ -138,9 +140,9 @@ export const CardStatusFooter = () => {
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectLabel>Escolha Brasil ou Mundo</SelectLabel>
+            <SelectLabel>Escolha Brasil ou Global</SelectLabel>
             <SelectItem value="brazil">Brasil</SelectItem>
-            <SelectItem value="countries">Mundo</SelectItem>
+            <SelectItem value="countries">Global</SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>
