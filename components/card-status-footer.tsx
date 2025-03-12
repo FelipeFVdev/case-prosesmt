@@ -102,10 +102,10 @@ export const CardStatusFooter = () => {
           }}
           placeholder="dd / mm / aaaa"
           className="w-full"
-          disabled={!!speficState} // Disable Input if speficState has a value
+          disabled={!!speficState || region !== "brazil"} // Disable Input if speficState has a value
         />
         <div className="absolute right-0 top-0.5 h-full px-3 py-2">
-          <CalendarIcon className="size-4" />
+          <CalendarIcon className="size-4 text-muted-foreground" />
         </div>
       </div>
       <Select
@@ -113,7 +113,7 @@ export const CardStatusFooter = () => {
           const selectedState = dataStates.find((item) => item.state === value);
           setSpeficState(selectedState?.uf || "");
         }}
-        disabled={!!inputValue} // Disable Select if inputValue has a value
+        disabled={!!inputValue || region !== "brazil"} // Disable Select if inputValue has a value
       >
         <SelectTrigger className="w-auto">
           <SelectValue placeholder="Selecione um Estado" />
