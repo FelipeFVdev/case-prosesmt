@@ -7,16 +7,12 @@ import { Check, Copy } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface JsonCardProps {
-  data: any;
+  data: object;
   title?: string;
   className?: string;
 }
 
-export function JsonCard({
-  data,
-  title = "JSON Data",
-  className,
-}: JsonCardProps) {
+export function JsonCard({ data, className }: JsonCardProps) {
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = () => {
@@ -25,6 +21,7 @@ export function JsonCard({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderValue = (value: any, path = "", indent = 0) => {
     const indentSize = 16;
     const paddingLeft = indent * indentSize;
@@ -42,7 +39,7 @@ export function JsonCard({
     }
 
     if (typeof value === "string") {
-      return <span className="text-green-500">"{value}"</span>;
+      return <span className="text-green-500">{value}</span>;
     }
 
     if (Array.isArray(value)) {
@@ -100,7 +97,7 @@ export function JsonCard({
           <div className="ml-4">
             {keys.map((key, i) => (
               <div key={key} style={{ paddingLeft }}>
-                <span className="text-purple-500">"{key}"</span>
+                <span className="text-purple-500">{key}</span>
                 <span className="text-gray-400">: </span>
                 {renderValue(value[key], `${path}.${key}`, indent + 1)}
                 {i < keys.length - 1 && (

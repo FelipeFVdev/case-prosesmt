@@ -61,7 +61,7 @@ const StatusForm = () => {
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardContent className="grid grid-cols-2 gap-6">
             <div className="grid lg:grid-cols-2 col-span-2 gap-6">
               <FormField

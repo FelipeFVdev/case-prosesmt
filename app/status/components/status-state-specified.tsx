@@ -5,7 +5,14 @@ import { CardContent } from "@/components/ui/card";
 import { CardStatusFooter } from "@/components/card-status-footer";
 
 type StateSpecifiedProps = {
-  dataState: any[];
+  dataState: Array<{
+    state?: string;
+    country?: string;
+    deaths: number;
+    cases: number;
+    suspects?: number;
+    confirmed?: number;
+  }>;
   isLoading: boolean;
   isError: boolean;
 };

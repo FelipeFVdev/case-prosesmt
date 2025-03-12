@@ -9,7 +9,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Separator } from "./ui/separator";
 
 type CardStatusContentProps = {
-  dataStates: any[];
+  dataStates: Array<{
+    state?: string;
+    country?: string;
+    deaths: number;
+    cases: number;
+    suspects?: number;
+    confirmed?: number;
+  }>;
   isLoading: boolean;
   isError: boolean;
 };
@@ -68,7 +75,7 @@ export const CardStatusContent = ({
                       {handleNumberFormat(
                         item.cases +
                           item.deaths +
-                          (item.suspects || item.confirmed)
+                          (item.suspects || item.confirmed || 0)
                       )}
                     </p>
                   </TooltipTrigger>

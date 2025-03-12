@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -13,7 +14,7 @@ import { Code } from "lucide-react";
 import { JsonCard } from "./json-card";
 
 interface JsonModalProps {
-  data: any;
+  data: object;
   title?: string;
   buttonText?: string;
 }
@@ -42,6 +43,9 @@ export function JsonModal({
           <DialogTitle className="text-base text-muted-foreground">
             JSON
           </DialogTitle>
+          <DialogDescription className="text-[12px] text-muted-foreground">
+            Visualizar dados
+          </DialogDescription>
         </DialogHeader>
         <div className=" overflow-auto max-h-[calc(90vh-100px)]">
           <JsonCard

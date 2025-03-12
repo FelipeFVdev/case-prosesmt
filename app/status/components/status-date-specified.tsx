@@ -6,7 +6,14 @@ import { CardStatusFooter } from "@/components/card-status-footer";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 type DateSpecifiedProps = {
-  dataStates: any[];
+  dataStates: Array<{
+    state?: string;
+    country?: string;
+    deaths: number;
+    cases: number;
+    suspects?: number;
+    confirmed?: number;
+  }>;
   isLoading: boolean;
   isError: boolean;
 };
