@@ -1,6 +1,7 @@
 "use client";
 
 import { CardStatusContent } from "@/components/card-status-content";
+import { CardStatusFooter } from "@/components/card-status-footer";
 import { CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useQuery } from "@tanstack/react-query";
@@ -38,6 +39,8 @@ const StatusWorld = () => {
           />
         </CardContent>
       </ScrollArea>
+
+      <CardStatusFooter />
     </>
   );
 };
