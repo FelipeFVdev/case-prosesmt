@@ -1,4 +1,9 @@
-import { LoaderCircleIcon } from "lucide-react";
+import {
+  BiohazardIcon,
+  CircleDashedIcon,
+  LoaderCircleIcon,
+  SkullIcon,
+} from "lucide-react";
 import { ScrollArea } from "./ui/scroll-area";
 import {
   Tooltip,
@@ -6,6 +11,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Separator } from "./ui/separator";
 
 type CardStatusContentProps = {
   dataStates: any[];
@@ -31,57 +38,54 @@ const CardStatusContent = ({
     );
   }
 
+  const handleNumberFormat = (number: number) => {
+    return new Intl.NumberFormat("pt-BR").format(number);
+  };
+
   return (
-    <ScrollArea className="h-96 overflow-y-auto">
+    <>
       {dataStates.length > 0 ? (
         dataStates.map((item, index) => (
-          <TooltipProvider key={index}>
-            <Tooltip>
-              <TooltipTrigger>
-                <div className="flex gap-2 border hover:bg-secondary rounded-lg p-4 mb-4 me-4">
-                  <h3>Estado: {item.state}</h3>
-                  <p>Status: {item.cases + item.deaths + item.suspects}</p>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="flex gap-2">
-                  <p>Cases:</p>
-                  <span> {item.cases}</span>
-                  <p>Deaths:</p>
-                  <span> {item.deaths}</span>
-                  <p>Suspects:</p>
-                  <span> {item.suspects}</span>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Card key={index} className=" gap-4 py-4">
+            <CardHeader>
+              <CardTitle>{item.state}</CardTitle>
+            </CardHeader>
+            <Separator />
+            <CardContent className="flex flex-col gap-2">
+              <p className="flex items-center gap-2">
+                <SkullIcon className="size-4" color="red" />
+                {handleNumberFormat(item.cases + item.deaths + item.suspects)}
+              </p>
+              <p className="flex items-center gap-2">
+                <BiohazardIcon className="size-4" />
+                {handleNumberFormat(item.cases + item.deaths + item.suspects)}
+              </p>
+            </CardContent>
+          </Card>
         ))
       ) : (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <div className="flex gap-2 border hover:bg-secondary rounded-lg p-4 mb-4 me-4">
-                <h3>Estado: {dataStates.state}</h3>
-                <p>
-                  Status:{" "}
-                  {dataStates.cases + dataStates.deaths + dataStates.suspects}
-                </p>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <div className="flex gap-2">
-                <p>Cases:</p>
-                <span> {dataStates.cases}</span>
-                <p>Deaths:</p>
-                <span> {dataStates.deaths}</span>
-                <p>Suspects:</p>
-                <span> {dataStates.suspects}</span>
-              </div>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <Card className="gap-4 py-4">
+          <CardHeader>
+            <CardTitle>{dataStates.state}</CardTitle>
+          </CardHeader>
+          <Separator />
+          <CardContent className="flex flex-col gap-2">
+            <p className="flex items-center gap-2">
+              <SkullIcon className="size-4" color="red" />
+              {handleNumberFormat(
+                dataStates.cases + dataStates.deaths + dataStates.suspects
+              )}
+            </p>
+            <p className="flex items-center gap-2">
+              <BiohazardIcon className="size-4" />
+              {handleNumberFormat(
+                dataStates.cases + dataStates.deaths + dataStates.suspects
+              )}
+            </p>
+          </CardContent>
+        </Card>
       )}
-    </ScrollArea>
+    </>
   );
 };
 

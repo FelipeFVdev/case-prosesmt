@@ -1,23 +1,8 @@
 "use client";
 import CardStatusContent from "@/components/card-status-content";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { CardStatusFooter } from "@/components/card-status-footer";
+import { CardContent } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useQuery } from "@tanstack/react-query";
 
 const States = () => {
@@ -39,65 +24,18 @@ const States = () => {
   });
 
   return (
-    <Card className="max-w-screen-md h-auto">
-      <CardHeader>
-        <CardTitle>Status Atual</CardTitle>
-        <CardDescription>
-          Consulta onde podemos visualizar o status atual de todos os estados da
-          federação ou de apenas um estado
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <CardStatusContent
-          dataStates={dataStates}
-          isLoading={isLoading}
-          isError={isError}
-        />
-      </CardContent>
-      <CardFooter className="flex gap-2">
-        {dataStates.length > 0 ? (
-          <Select
-            onValueChange={(value) => {
-              const selectedState = dataStates.find(
-                (item) => item.state === value
-              );
-              setSpeficiState(selectedState?.uf || "");
-            }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Selecione um Estado" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Estados</SelectLabel>
-                {dataStates.map((item, index) => (
-                  <SelectItem key={index} value={item.state}>
-                    {item.state}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        ) : (
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Selecione um Estado" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Estados</SelectLabel>
-
-                <SelectItem value={dataStates.state}>
-                  {dataStates.state}
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        )}
-
-        <Button variant="default">Consultar</Button>
-      </CardFooter>
-    </Card>
+    <>
+      <ScrollArea className="h-96 ">
+        <CardContent className="grid grid-cols-3 gap-4 ">
+          <CardStatusContent
+            dataStates={dataStates}
+            isLoading={isLoading}
+            isError={isError}
+          />
+        </CardContent>
+      </ScrollArea>
+      <CardStatusFooter />
+    </>
   );
 };
 

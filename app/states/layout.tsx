@@ -1,3 +1,10 @@
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
 export default function StatesLayout({
   children,
 }: Readonly<{
@@ -5,7 +12,17 @@ export default function StatesLayout({
 }>) {
   return (
     <div className="mt-4 px-8 flex items-center justify-center gap-4">
-      {children}
+      <Card className="max-w-screen-md h-auto">
+        <CardHeader>
+          <CardTitle>Status Atual</CardTitle>
+          <CardDescription>
+            Consulta onde podemos visualizar o status atual de todos os estados
+            da federação ou de apenas um estado
+          </CardDescription>
+        </CardHeader>
+
+        {children}
+      </Card>
     </div>
   );
 }

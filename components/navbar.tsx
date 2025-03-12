@@ -62,7 +62,7 @@ const Navbar = ({
     alt: "logo",
   },
   menu = [
-    { title: "Home", url: "#" },
+    { title: "Home", url: "/states" },
     // {
     //   title: "Products",
     //   url: "#",
