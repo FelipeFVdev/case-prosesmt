@@ -29,9 +29,8 @@ export default function RootLayout({
     <Provider>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen flex items-center justify-center w-screen`}
         >
-          <Navbar />
           {children}
         </body>
       </html>

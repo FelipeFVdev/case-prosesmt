@@ -25,8 +25,8 @@ const States = () => {
 
   return (
     <>
-      <ScrollArea className="h-96 ">
-        <CardContent className="grid grid-cols-3 gap-4 ">
+      <ScrollArea className="h-[450px]">
+        <CardContent className="grid grid-cols-1 lg:grid-cols-3 gap-4 ">
           <CardStatusContent
             dataStates={dataStates}
             isLoading={isLoading}

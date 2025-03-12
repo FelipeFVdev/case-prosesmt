@@ -12,7 +12,7 @@ export default function StatesLayout({
 }>) {
   return (
     <div className="mt-4 px-8 flex items-center justify-center gap-4">
-      <Card className="max-w-screen-md h-auto">
+      <Card>
         <CardHeader>
           <CardTitle>Status Atual</CardTitle>
           <CardDescription>
