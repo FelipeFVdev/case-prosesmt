@@ -15,7 +15,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Input } from "./ui/input";
 import { CalendarIcon } from "lucide-react";
-import { format, isValid, parse } from "date-fns";
+import { format, parse } from "date-fns";
 
 export const CardStatusFooter = () => {
   const router = useRouter();
@@ -27,6 +27,9 @@ export const CardStatusFooter = () => {
 
   const [date, setDate] = useState<Date | undefined>();
   const [inputValue, setInputValue] = useState<string>("");
+
+  // Estado para controlar o Select de Brasil ou Mundo
+  const [region, setRegion] = useState<string>("brazil");
 
   // Update input value when date changes from calendar
   useEffect(() => {
@@ -75,6 +78,8 @@ export const CardStatusFooter = () => {
   const handleButton = () => {
     if (date) {
       router.push(`/status/date?params=${format(date, "yyyyMMdd")}`);
+    } else if (region === "countries") {
+      router.push(`/status/world?params=${region}`);
     } else {
       router.push(`/status/${speficState}`);
     }
@@ -82,7 +87,7 @@ export const CardStatusFooter = () => {
 
   return (
     <CardFooter className="flex gap-2">
-      <div className="relative">
+      <div className="relative ">
         <Input
           id="date"
           value={inputValue}
@@ -110,7 +115,7 @@ export const CardStatusFooter = () => {
         }}
         disabled={!!inputValue} // Disable Select if inputValue has a value
       >
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-auto">
           <SelectValue placeholder="Selecione um Estado" />
         </SelectTrigger>
         <SelectContent>
@@ -124,8 +129,26 @@ export const CardStatusFooter = () => {
           </SelectGroup>
         </SelectContent>
       </Select>
+      <Select
+        value={region} // Control the Select value with region
+        onValueChange={(value) => setRegion(value)}
+      >
+        <SelectTrigger className="w-auto">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Escolha Brasil ou Mundo</SelectLabel>
+            <SelectItem value="brazil">Brasil</SelectItem>
+            <SelectItem value="countries">Mundo</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
       <Button variant="default" onClick={handleButton}>
         Consultar
+      </Button>
+      <Button variant="secondary" onClick={() => router.replace("/status")}>
+        Voltar
       </Button>
     </CardFooter>
   );

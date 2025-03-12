@@ -42,7 +42,7 @@ export const CardStatusContent = ({
         dataStates.map((item, index) => (
           <Card key={index} className=" gap-4 py-4">
             <CardHeader>
-              <CardTitle>{item.state}</CardTitle>
+              <CardTitle>{item.state || item.country}</CardTitle>
             </CardHeader>
             <Separator />
             <CardContent className="flex flex-col gap-2">
@@ -66,7 +66,9 @@ export const CardStatusContent = ({
                     <p className="flex items-center gap-2 hover:cursor-default hover:font-semibold">
                       <BiohazardIcon className="size-4" />
                       {handleNumberFormat(
-                        item.cases + item.deaths + item.suspects
+                        item.cases +
+                          item.deaths +
+                          (item.suspects || item.confirmed)
                       )}
                     </p>
                   </TooltipTrigger>
