@@ -12,7 +12,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Separator } from "./ui/separator";
 import { Skeleton } from "./ui/skeleton";
 import { useParams, useSearchParams } from "next/navigation";
-import { toast } from "sonner";
 
 // Define a interface para os dados do estado
 interface StateData {
