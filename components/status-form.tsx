@@ -23,8 +23,8 @@ const formSchema = z.object({
   confirmed: z.coerce.number().nonnegative().safe(),
   deaths: z.coerce.number().nonnegative().safe(),
   recoverd: z.coerce.number().nonnegative().safe(),
-  createdAt: z.string().date().optional(),
-  updatedAt: z.string().date().optional(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
 });
 
 const StatusForm = () => {
