@@ -24,6 +24,8 @@ export const CardStatusContent = () => {
 
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Define a interface para os dados do estado
   interface StateData {
     state?: string;
     country?: string;
@@ -35,7 +37,7 @@ export const CardStatusContent = () => {
 
   const [statesFetch, setStatesFetch] = useState<StateData[] | StateData>([]);
 
-  // RETORNA TODOS OS ESTADOS DO BRAZIL
+  // Função para buscar todos os estados do Brasil
   const getStates = async () => {
     try {
       const res = await fetch(
@@ -51,7 +53,7 @@ export const CardStatusContent = () => {
     }
   };
 
-  // RETORNA UM ESTADO ESPEFICO DO BRAZIL
+  // Função para buscar um estado específico do Brasil
   const getSpecifiedState = async () => {
     try {
       const res = await fetch(
@@ -69,7 +71,7 @@ export const CardStatusContent = () => {
     }
   };
 
-  // RETORNA TODOS OS ESTADOS DO BRAZIL NESTE PERIODO EM UMA DATA ESPEFICA
+  // Função para buscar todos os estados do Brasil em uma data específica
   const getSpecifiedDate = async () => {
     try {
       const res = await fetch(
@@ -87,7 +89,7 @@ export const CardStatusContent = () => {
     }
   };
 
-  // RETORNA TODOS OS PAISES DO MUNDO
+  // Função para buscar todos os países do mundo
   const getGlobal = async () => {
     try {
       const res = await fetch(
@@ -105,6 +107,7 @@ export const CardStatusContent = () => {
     }
   };
 
+  // useEffect para buscar os dados com base nos parâmetros
   useEffect(() => {
     if (slug) {
       getSpecifiedState();
@@ -117,6 +120,7 @@ export const CardStatusContent = () => {
     }
   }, []);
 
+  // Função para formatar números
   const handleNumberFormat = (number: number) => {
     return new Intl.NumberFormat("pt-BR").format(number);
   };
@@ -126,7 +130,7 @@ export const CardStatusContent = () => {
       <div className="col-span-3">
         <div className="flex items-center justify-center p-4">
           <p className="text-sm text-muted-foreground">
-            Alguma coisa deu errao. Por favor tente novamente mais tarde!
+            Alguma coisa deu errado. Por favor tente novamente mais tarde!
           </p>
         </div>
       </div>

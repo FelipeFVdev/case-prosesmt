@@ -31,38 +31,37 @@ export const CardStatusFooter = () => {
   // Estado para controlar o Select de Brasil ou Global
   const [region, setRegion] = useState<string>("brazil");
 
-  // Update input value when date changes from calendar
+  // Atualiza o valor do input quando a data muda
   useEffect(() => {
     if (date) {
       setInputValue(format(date, "dd/MM/yyyy"));
     }
   }, [date]);
 
-  // Handle manual input
+  // Lida com a entrada manual do input de data
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputValue(value);
 
-    // Try to parse the date
+    // Verifica se existe data válida no formato ddMMyyyy
     if (value.length === 10) {
-      // Complete date format (dd/MM/yyyy)
+      // Formato completo de data (dd/MM/yyyy)
       try {
         const parsedDate = parse(value, "dd/MM/yyyy", new Date());
 
         setDate(parsedDate);
       } catch (error) {
-        // Invalid date format, do nothing
         console.log(error);
       }
     }
   };
 
-  // Format input as user types
+  // Formata a entrada conforme o usuário digita
   const formatInput = (value: string) => {
-    // Remove any non-digit characters
+    // Remove qualquer caractere não numérico
     const digits = value.replace(/\D/g, "");
 
-    // Format as dd/MM/yyyy
+    // Formata como dd/MM/yyyy
     if (digits.length <= 2) {
       return digits;
     } else if (digits.length <= 4) {
@@ -92,7 +91,8 @@ export const CardStatusFooter = () => {
           const state = statesFetch.find((item) => item.state === value);
           setSpeficState(state ? `specified/state/${state.uf}` : "");
         }}
-        disabled={!!inputValue || region !== "brazil"} // Disable Select if inputValue has a value
+        // Desabilita o Select se inputValue tiver um valor ou se a região não for "brazil"
+        disabled={!!inputValue || region !== "brazil"}
       >
         <SelectTrigger className="w-auto">
           <SelectValue placeholder="Selecione um Estado" />
@@ -124,7 +124,8 @@ export const CardStatusFooter = () => {
           }}
           placeholder="dd / mm / aaaa"
           className="w-full"
-          disabled={!!speficState || region !== "brazil"} // Disable Input if speficState has a value
+          // Desabilita o Input se speficState tiver um valor ou se a região não for "brazil"
+          disabled={!!speficState || region !== "brazil"}
         />
         <div className="absolute right-0 top-0.5 h-full px-3 py-2">
           <CalendarIcon className="size-4 text-muted-foreground" />
@@ -132,7 +133,7 @@ export const CardStatusFooter = () => {
       </div>
 
       <Select
-        value={region} // Control the Select value with region
+        value={region} // Controla o valor do Select com region
         onValueChange={(value) => setRegion(value)}
       >
         <SelectTrigger className="w-auto">
@@ -149,14 +150,9 @@ export const CardStatusFooter = () => {
       <Button variant="default" onClick={handleButton}>
         Consultar
       </Button>
-      {/* NOVO */}
       <Button variant="secondary" onClick={() => router.replace("/")}>
         Voltar
       </Button>
-      {/* ANTIGO */}
-      {/* <Button variant="secondary" onClick={() => router.replace("/status")}>
-        Voltar
-      </Button> */}
     </CardFooter>
   );
 };

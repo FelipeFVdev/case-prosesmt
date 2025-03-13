@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
+// Define o tipo para os dados de estado
 type StateFetchType = {
   state?: string;
   uf?: string;
@@ -12,15 +13,17 @@ type StateFetchType = {
   confirmed?: number;
 };
 
-// Create the context
+// Cria o contexto com um valor padrão
 const StatesContext = createContext<{ statesFetch: StateFetchType[] }>({
   statesFetch: [],
 });
 
+// Define o provedor do contexto
 export function StatesProvider({ children }: { children: React.ReactNode }) {
   const [statesFetch, setStatesFetch] = useState<StateFetchType[]>([]);
+
   useEffect(() => {
-    // RETORNA TODOS OS ESTADOS DO BRAZIL
+    // Função para buscar todos os estados do Brasil
     const getStates = async () => {
       try {
         const res = await fetch(
@@ -33,10 +36,12 @@ export function StatesProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
+    // Chama a função para buscar os estados
     getStates();
-  }, []);
+  }, []); // O array vazio [] garante que o efeito seja executado apenas uma vez, quando o componente é montado
 
   return (
+    // Provedor do contexto que passa os dados dos estados para os componentes filhos
     <StatesContext.Provider
       value={{
         statesFetch,
@@ -47,7 +52,7 @@ export function StatesProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Create a custom hook for using this context
+// Hook personalizado para usar o contexto dos estados
 export function useStatesContext() {
   return useContext(StatesContext);
 }
