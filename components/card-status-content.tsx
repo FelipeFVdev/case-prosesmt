@@ -191,7 +191,7 @@ export const CardStatusContent = () => {
     );
   } else if (!Array.isArray(statesFetch)) {
     return (
-      <Card className="gap-4 py-4 w-fit h-fit">
+      <Card className="gap-4 py-4 w-52 h-fit">
         <CardHeader>
           <CardTitle>{statesFetch.state}</CardTitle>
         </CardHeader>

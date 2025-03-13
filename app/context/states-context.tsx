@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 type StateFetchType = {
   state?: string;
+  uf?: string;
   country?: string;
   deaths: number;
   cases: number;

@@ -77,20 +77,11 @@ export const CardStatusFooter = () => {
 
   const handleButton = () => {
     if (date) {
-      //novo
       router.push(`/specified/date?datetime=${format(date, "yyyyMMdd")}`);
-      //antigo
-      //router.push(`/status/date?params=${format(date, "yyyyMMdd")}`);
     } else if (region === "countries") {
-      //novo
       router.push(`/world?region=${region}`);
-      //antigo
-      // router.push(`/status/world?params=${region}`);
     } else {
-      //novo
       router.push(`/${speficState}`);
-      //antigo
-      //router.push(`/status/${speficState}`);
     }
   };
 
@@ -98,10 +89,8 @@ export const CardStatusFooter = () => {
     <CardFooter className="lg:flex grid gap-2">
       <Select
         onValueChange={(value) => {
-          const selectedState = statesFetch.find(
-            (item) => item.state === value
-          );
-          setSpeficState(`specified/state/${selectedState?.uf}` || "");
+          const state = statesFetch.find((item) => item.state === value);
+          setSpeficState(state ? `specified/state/${state.uf}` : "");
         }}
         disabled={!!inputValue || region !== "brazil"} // Disable Select if inputValue has a value
       >
