@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { StateSpecified } from "../components/status-state-specified";
 import { use } from "react";
 
+// TO DO: PASSAR PARA CARD-STATUS-CONENT E PASSAR O SLUG
 const SpecificState = ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = use(params);
 

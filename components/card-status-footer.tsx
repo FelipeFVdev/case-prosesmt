@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import { CardFooter } from "@/components/ui/card";
 import {
@@ -11,17 +12,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Input } from "./ui/input";
 import { CalendarIcon } from "lucide-react";
 import { format, parse } from "date-fns";
+import { useStatesContext } from "@/app/context/states-context";
 
 export const CardStatusFooter = () => {
   const router = useRouter();
 
-  const queryClient = useQueryClient();
-  const dataStates: any[] = queryClient.getQueryData(["states"]) || [];
+  const { statesFetch } = useStatesContext();
 
   const [speficState, setSpeficState] = useState("");
 
@@ -77,11 +77,20 @@ export const CardStatusFooter = () => {
 
   const handleButton = () => {
     if (date) {
-      router.push(`/status/date?params=${format(date, "yyyyMMdd")}`);
+      //novo
+      router.push(`/specified/date?datetime=${format(date, "yyyyMMdd")}`);
+      //antigo
+      //router.push(`/status/date?params=${format(date, "yyyyMMdd")}`);
     } else if (region === "countries") {
-      router.push(`/status/world?params=${region}`);
+      //novo
+      router.push(`/world?region=${region}`);
+      //antigo
+      // router.push(`/status/world?params=${region}`);
     } else {
-      router.push(`/status/${speficState}`);
+      //novo
+      router.push(`/${speficState}`);
+      //antigo
+      //router.push(`/status/${speficState}`);
     }
   };
 
@@ -89,8 +98,10 @@ export const CardStatusFooter = () => {
     <CardFooter className="lg:flex grid gap-2">
       <Select
         onValueChange={(value) => {
-          const selectedState = dataStates.find((item) => item.state === value);
-          setSpeficState(selectedState?.uf || "");
+          const selectedState = statesFetch.find(
+            (item) => item.state === value
+          );
+          setSpeficState(`specified/state/${selectedState?.uf}` || "");
         }}
         disabled={!!inputValue || region !== "brazil"} // Disable Select if inputValue has a value
       >
@@ -100,7 +111,7 @@ export const CardStatusFooter = () => {
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Estados</SelectLabel>
-            {dataStates.map((item, index) => (
+            {statesFetch.map((item, index) => (
               <SelectItem key={index} value={item.state}>
                 {item.state}
               </SelectItem>
@@ -149,9 +160,14 @@ export const CardStatusFooter = () => {
       <Button variant="default" onClick={handleButton}>
         Consultar
       </Button>
-      <Button variant="secondary" onClick={() => router.replace("/status")}>
+      {/* NOVO */}
+      <Button variant="secondary" onClick={() => router.replace("/")}>
         Voltar
       </Button>
+      {/* ANTIGO */}
+      {/* <Button variant="secondary" onClick={() => router.replace("/status")}>
+        Voltar
+      </Button> */}
     </CardFooter>
   );
 };

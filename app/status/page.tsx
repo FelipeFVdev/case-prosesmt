@@ -5,10 +5,11 @@ import { CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useQuery } from "@tanstack/react-query";
 
+// TO DO: PASSAR PARA CARD-STATUS-CONENT
 const Status = () => {
   // refetch and caching
   const {
-    data: dataStates = [],
+    data = [],
     isLoading,
     isError,
   } = useQuery({
@@ -28,7 +29,7 @@ const Status = () => {
       <ScrollArea className="lg:h-[450px] h-72">
         <CardContent className="grid grid-cols-1 lg:grid-cols-3 gap-4 ">
           <CardStatusContent
-            dataStates={dataStates}
+            dataStates={data}
             isLoading={isLoading}
             isError={isError}
           />

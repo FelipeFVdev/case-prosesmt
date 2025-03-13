@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 
+// TO DO: PASSAR PARA CARD-STATUS-CONENT
 const StatusWorld = () => {
   const searchParams = useSearchParams();
   const search = searchParams.get("params");
@@ -17,7 +18,7 @@ const StatusWorld = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["dateSpecificState"],
+    queryKey: ["globalStatus"],
     queryFn: async () => {
       const res = await fetch(
         `https://covid19-brazil-api.now.sh/api/report/v1/${search}`

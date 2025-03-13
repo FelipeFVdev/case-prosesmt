@@ -3,8 +3,7 @@ import { CardStatusFooter } from "@/components/card-status-footer";
 import { CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-// TO DO: PASSAR PARA CARD-STATUS-CONENT
-const Status = () => {
+const StatusWorld = () => {
   return (
     <>
       <ScrollArea className="lg:h-[450px] h-72">
@@ -17,4 +16,4 @@ const Status = () => {
   );
 };
 
-export default Status;
+export default StatusWorld;

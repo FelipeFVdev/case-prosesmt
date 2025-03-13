@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { DateSpecified } from "../components/status-date-specified";
 import { useSearchParams } from "next/navigation";
 
+// TO DO: PASSAR PARA CARD-STATUS-CONENT
 const DateSpecificState = () => {
   const searchParams = useSearchParams();
   const search = searchParams.get("params");
@@ -25,13 +26,11 @@ const DateSpecificState = () => {
   });
 
   return (
-    <>
-      <DateSpecified
-        dataStates={dataStates}
-        isLoading={isLoading}
-        isError={isError}
-      />
-    </>
+    <DateSpecified
+      dataStates={dataStates}
+      isLoading={isLoading}
+      isError={isError}
+    />
   );
 };
 

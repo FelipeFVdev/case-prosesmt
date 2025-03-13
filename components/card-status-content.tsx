@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { BiohazardIcon, SkullIcon } from "lucide-react";
 import {
   Tooltip,
@@ -8,26 +11,99 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Separator } from "./ui/separator";
 import { Skeleton } from "./ui/skeleton";
-import { object } from "zod";
+import { useParams, useSearchParams } from "next/navigation";
 
-type CardStatusContentProps = {
-  dataStates: Array<{
-    state?: string;
-    country?: string;
-    deaths: number;
-    cases: number;
-    suspects?: number;
-    confirmed?: number;
-  }>;
-  isLoading: boolean;
-  isError: boolean;
-};
+export const CardStatusContent = () => {
+  const searchParams = useSearchParams();
+  const params: { slug: string } = useParams();
 
-export const CardStatusContent = ({
-  dataStates,
-  isLoading,
-  isError,
-}: CardStatusContentProps) => {
+  const { slug } = params;
+
+  const searchDate = searchParams.get("datetime");
+  const searchRegion = searchParams.get("region");
+
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [statesFetch, setStatesFetch] = useState([]);
+
+  // RETORNA TODOS OS ESTADOS DO BRAZIL
+  const getStates = async () => {
+    try {
+      const res = await fetch(
+        "https://covid19-brazil-api.now.sh/api/report/v1/"
+      );
+      const { data } = await res.json();
+      setStatesFetch(data);
+    } catch (error) {
+      setIsError(true);
+      console.log("[states_GET]: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // RETORNA UM ESTADO ESPEFICO DO BRAZIL
+  const getSpecifiedState = async () => {
+    try {
+      const res = await fetch(
+        `https://covid19-brazil-api.now.sh/api/report/v1/brazil/uf/${slug.toLowerCase()}`
+      );
+      const data = await res.json();
+      setStatesFetch(data);
+    } catch (error) {
+      setIsError(true);
+      console.log("[specifiedState_GET]: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // RETORNA TODOS OS ESTADOS DO BRAZIL NESTE PERIODO EM UMA DATA ESPEFICA
+  const getSpecifiedDate = async () => {
+    console.log("getSpecifiedDate");
+    try {
+      const res = await fetch(
+        `https://covid19-brazil-api.now.sh/api/report/v1/brazil/${searchDate}`
+      );
+      const { data } = await res.json();
+      setStatesFetch(data);
+    } catch (error) {
+      setIsError(true);
+      console.log("[specifiedDate_GET]: ", error);
+    } finally {
+      console.log(statesFetch);
+      setIsLoading(false);
+    }
+  };
+
+  // RETORNA TODOS OS PAISES DO MUNDO
+  const getGlobal = async () => {
+    try {
+      const res = await fetch(
+        `https://covid19-brazil-api.now.sh/api/report/v1/${searchRegion}`
+      );
+      const { data } = await res.json();
+      setStatesFetch(data);
+    } catch (error) {
+      setIsError(true);
+      console.log("[specifiedDate_GET]: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (slug) {
+      getSpecifiedState();
+    } else if (searchDate) {
+      getSpecifiedDate();
+    } else if (searchRegion) {
+      getGlobal();
+    } else {
+      getStates();
+    }
+  }, []);
+
   const handleNumberFormat = (number: number) => {
     return new Intl.NumberFormat("pt-BR").format(number);
   };
@@ -35,7 +111,7 @@ export const CardStatusContent = ({
   if (isLoading) {
     return (
       <>
-        {dataStates.map((data, index) => (
+        {statesFetch.map((data, index) => (
           <div key={index} className="flex flex-col gap-4">
             <Skeleton className="h-35 w-50" />
           </div>
@@ -55,12 +131,10 @@ export const CardStatusContent = ({
     );
   }
 
-  console.log(!Array.isArray(dataStates));
-
-  if (Object.keys(dataStates).length > 9) {
+  if (Object.keys(statesFetch).length > 9) {
     return (
       <>
-        {dataStates.map((item, index) => (
+        {statesFetch.map((item, index) => (
           <Card key={index} className=" gap-4 py-4">
             <CardHeader>
               <CardTitle>{item.state || item.country}</CardTitle>
@@ -103,12 +177,12 @@ export const CardStatusContent = ({
         ))}
       </>
     );
-  } else if (!Array.isArray(dataStates)) {
+  } else if (!Array.isArray(statesFetch)) {
     return (
       <>
         <Card className="gap-4 py-4">
           <CardHeader>
-            <CardTitle>{dataStates.state}</CardTitle>
+            <CardTitle>{statesFetch.state}</CardTitle>
           </CardHeader>
           <Separator />
           <CardContent className="flex flex-col gap-2">
@@ -117,7 +191,7 @@ export const CardStatusContent = ({
                 <TooltipTrigger asChild>
                   <p className="flex items-center gap-2 hover:cursor-default hover:font-semibold">
                     <SkullIcon className="size-4" color="red" />
-                    {handleNumberFormat(dataStates.deaths)}
+                    {handleNumberFormat(statesFetch.deaths)}
                   </p>
                 </TooltipTrigger>
                 <TooltipContent side="left">
@@ -131,7 +205,9 @@ export const CardStatusContent = ({
                   <p className="flex items-center gap-2 hover:cursor-default hover:font-semibold">
                     <BiohazardIcon className="size-4" />
                     {handleNumberFormat(
-                      dataStates.cases + dataStates.deaths + dataStates.suspects
+                      statesFetch.cases +
+                        statesFetch.deaths +
+                        statesFetch.suspects
                     )}
                   </p>
                 </TooltipTrigger>
@@ -147,10 +223,12 @@ export const CardStatusContent = ({
   }
 
   return (
-    <div className="col-span-3">
-      <div className="flex items-center justify-center p-4">
-        <p className="text-sm text-muted-foreground">Dados indisponíveis</p>
+    <>
+      <div className="col-span-3">
+        <div className="flex items-center justify-center p-4">
+          <p className="text-sm text-muted-foreground">Dados indisponíveis</p>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
