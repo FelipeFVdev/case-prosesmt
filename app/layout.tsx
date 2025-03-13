@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import StatusForm from "./status/components/status-form";
+import StatusForm from "@/components/status-form";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
