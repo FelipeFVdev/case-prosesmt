@@ -17,6 +17,7 @@ import { JsonModal } from "@/components/json.modal";
 import { useState } from "react";
 import { toast } from "sonner";
 
+// Define o esquema de validação do formulário usando Zod
 const formSchema = z.object({
   stateBrazil: z.string().min(2),
   cases: z.coerce.number().nonnegative().safe(),
@@ -30,6 +31,7 @@ const formSchema = z.object({
 const StatusForm = () => {
   const [jsonData, setJsonData] = useState({});
 
+  // Configura o formulário usando react-hook-form e zodResolver para validação
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,6 +45,7 @@ const StatusForm = () => {
     },
   });
 
+  // Função chamada ao enviar o formulário
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     setJsonData({
       uid: "99",

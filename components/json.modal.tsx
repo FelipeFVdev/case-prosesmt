@@ -32,7 +32,7 @@ export function JsonModal({
         <Button
           className="flex items-center gap-2"
           variant="outline"
-          disabled={!Object.keys(data).length}
+          disabled={!Object.keys(data).length} // Desabilita o botão se não houver dados
         >
           <Code className="h-4 w-4" />
           {buttonText}
@@ -47,7 +47,7 @@ export function JsonModal({
             Visualizar dados
           </DialogDescription>
         </DialogHeader>
-        <div className=" overflow-auto max-h-[calc(90vh-100px)]">
+        <div className="overflow-auto max-h-[calc(90vh-100px)]">
           <JsonCard
             data={data}
             title={title}

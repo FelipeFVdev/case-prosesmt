@@ -12,120 +12,90 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Separator } from "./ui/separator";
 import { Skeleton } from "./ui/skeleton";
 import { useParams, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
+
+// Define a interface para os dados do estado
+interface StateData {
+  state?: string;
+  country?: string;
+  deaths: number;
+  cases: number;
+  suspects: number;
+  confirmed?: number;
+}
+
+// URL base da API
+const API_BASE_URL = "https://covid19-brazil-api.now.sh/api/report/v1";
+const LOADING_DELAY_MS = 3000; // Define o tempo de atraso para exibição do carregamento
 
 export const CardStatusContent = () => {
   const searchParams = useSearchParams();
-  const params: { slug: string } = useParams();
-
-  const { slug } = params;
+  const { slug } = useParams<{ slug: string }>();
 
   const searchDate = searchParams.get("datetime");
   const searchRegion = searchParams.get("region");
 
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Define a interface para os dados do estado
-  interface StateData {
-    state?: string;
-    country?: string;
-    deaths: number;
-    cases: number;
-    suspects: number;
-    confirmed?: number;
-  }
-
   const [statesFetch, setStatesFetch] = useState<StateData[] | StateData>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
-  // Função para buscar todos os estados do Brasil
-  const getStates = async () => {
-    try {
-      const res = await fetch(
-        "https://covid19-brazil-api.now.sh/api/report/v1/"
-      );
-      const { data } = await res.json();
-      setStatesFetch(data);
-    } catch (error) {
-      setIsError(true);
-      console.log("[states_GET]: ", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Função para buscar um estado específico do Brasil
-  const getSpecifiedState = async () => {
-    try {
-      const res = await fetch(
-        `https://covid19-brazil-api.now.sh/api/report/v1/brazil/uf/${slug.toLowerCase()}`
-      );
-      const data = await res.json();
-      setStatesFetch(data);
-    } catch (error) {
-      setIsError(true);
-      console.log("[specifiedState_GET]: ", error);
-    } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 3000);
-    }
-  };
-
-  // Função para buscar todos os estados do Brasil em uma data específica
-  const getSpecifiedDate = async () => {
-    try {
-      const res = await fetch(
-        `https://covid19-brazil-api.now.sh/api/report/v1/brazil/${searchDate}`
-      );
-      const { data } = await res.json();
-      setStatesFetch(data);
-    } catch (error) {
-      setIsError(true);
-      console.log("[specifiedDate_GET]: ", error);
-    } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 3000);
-    }
-  };
-
-  // Função para buscar todos os países do mundo
-  const getGlobal = async () => {
-    try {
-      const res = await fetch(
-        `https://covid19-brazil-api.now.sh/api/report/v1/${searchRegion}`
-      );
-      const { data } = await res.json();
-      setStatesFetch(data);
-    } catch (error) {
-      setIsError(true);
-      console.log("[specifiedDate_GET]: ", error);
-    } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 3000);
-    }
-  };
-
-  // useEffect para buscar os dados com base nos parâmetros
   useEffect(() => {
-    if (slug) {
-      getSpecifiedState();
-    } else if (searchDate) {
-      getSpecifiedDate();
-    } else if (searchRegion) {
-      getGlobal();
-    } else {
-      getStates();
-    }
-  }, []);
+    const fetchData = async () => {
+      setIsLoading(true);
+      setError(null);
 
-  // Função para formatar números
+      let endpoint: string = "";
+      let shouldDelay: boolean = false;
+
+      try {
+        // Define o endpoint com base nos parâmetros
+        if (slug) {
+          endpoint = `${API_BASE_URL}/brazil/uf/${slug.toLowerCase()}`;
+          shouldDelay = true;
+        } else if (searchDate) {
+          endpoint = `${API_BASE_URL}/brazil/${searchDate}`;
+          shouldDelay = true;
+        } else if (searchRegion) {
+          endpoint = `${API_BASE_URL}/${searchRegion}`;
+          shouldDelay = true;
+        } else {
+          endpoint = API_BASE_URL;
+        }
+
+        // Faz a requisição para o endpoint
+        const response = await fetch(endpoint);
+
+        if (!response.ok) {
+          throw new Error(`Erro na requisição da API: ${response.status}`);
+        }
+
+        const result = await response.json();
+        const resultData = "data" in result ? result.data : result;
+        setStatesFetch(resultData);
+      } catch (err) {
+        console.error(`[COVID_API_ERROR]: ${err}`);
+      } finally {
+        // Controla o estado de carregamento com ou sem atraso
+        const finishLoading = () => setIsLoading(false);
+
+        if (shouldDelay) {
+          setTimeout(finishLoading, LOADING_DELAY_MS);
+        } else {
+          finishLoading();
+        }
+      }
+    };
+
+    fetchData();
+  }, [slug, searchDate, searchRegion]); // Array de dependências para o useEffect
+
+  // Função para formatar números no padrão brasileiro
   const handleNumberFormat = (number: number) => {
     return new Intl.NumberFormat("pt-BR").format(number);
   };
 
-  if (isError) {
+  // Renderiza mensagem de erro caso ocorra algum problema
+  if (error) {
     return (
       <div className="col-span-3">
         <div className="flex items-center justify-center p-4">
@@ -137,6 +107,7 @@ export const CardStatusContent = () => {
     );
   }
 
+  // Renderiza os dados enquanto está carregando
   if (Array.isArray(statesFetch) && statesFetch.length > 0) {
     return isLoading ? (
       <>
@@ -194,6 +165,7 @@ export const CardStatusContent = () => {
       </>
     );
   } else if (!Array.isArray(statesFetch)) {
+    // Renderiza os dados de um único estado
     return (
       <Card className="gap-4 py-4 w-52 h-fit">
         <CardHeader>
@@ -236,6 +208,7 @@ export const CardStatusContent = () => {
     );
   }
 
+  // Renderiza mensagem caso não haja dados disponíveis
   return (
     <div className="col-span-3">
       <div className="flex items-center justify-center p-4">

@@ -15,12 +15,14 @@ interface JsonCardProps {
 export function JsonCard({ data, className }: JsonCardProps) {
   const [copied, setCopied] = useState(false);
 
+  // Função para copiar o JSON para a área de transferência
   const copyToClipboard = () => {
     navigator.clipboard.writeText(JSON.stringify(data, null, 2));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Função para renderizar o valor do JSON
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderValue = (value: any, path = "", indent = 0) => {
     const indentSize = 16;
@@ -127,12 +129,12 @@ export function JsonCard({ data, className }: JsonCardProps) {
           {copied ? (
             <>
               <Check className="h-4 w-4 mr-1" />
-              <span>Copied</span>
+              <span>Copiado</span>
             </>
           ) : (
             <>
               <Copy className="h-4 w-4 mr-1" />
-              <span>Copy</span>
+              <span>Copiar</span>
             </>
           )}
         </Button>
