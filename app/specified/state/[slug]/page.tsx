@@ -2,10 +2,10 @@ import { CardStatusContent } from "@/components/card-status-content";
 import { CardContent } from "@/components/ui/card";
 import { CardStatusFooter } from "@/components/card-status-footer";
 
-const StateSpecified = () => {
+const SpecifiedStatus = () => {
   return (
     <>
-      <CardContent>
+      <CardContent className="flex items-center justify-center lg:h-[312px] ">
         <CardStatusContent />
       </CardContent>
       <CardStatusFooter />
@@ -13,4 +13,4 @@ const StateSpecified = () => {
   );
 };
 
-export default StateSpecified;
+export default SpecifiedStatus;

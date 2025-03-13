@@ -112,7 +112,7 @@ export const CardStatusFooter = () => {
           <SelectGroup>
             <SelectLabel>Estados</SelectLabel>
             {statesFetch.map((item, index) => (
-              <SelectItem key={index} value={item.state}>
+              <SelectItem key={index} value={item.state || ""}>
                 {item.state}
               </SelectItem>
             ))}

@@ -24,7 +24,16 @@ export const CardStatusContent = () => {
 
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [statesFetch, setStatesFetch] = useState([]);
+  interface StateData {
+    state?: string;
+    country?: string;
+    deaths: number;
+    cases: number;
+    suspects: number;
+    confirmed?: number;
+  }
+
+  const [statesFetch, setStatesFetch] = useState<StateData[] | StateData>([]);
 
   // RETORNA TODOS OS ESTADOS DO BRAZIL
   const getStates = async () => {
@@ -54,13 +63,14 @@ export const CardStatusContent = () => {
       setIsError(true);
       console.log("[specifiedState_GET]: ", error);
     } finally {
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 3000);
     }
   };
 
   // RETORNA TODOS OS ESTADOS DO BRAZIL NESTE PERIODO EM UMA DATA ESPEFICA
   const getSpecifiedDate = async () => {
-    console.log("getSpecifiedDate");
     try {
       const res = await fetch(
         `https://covid19-brazil-api.now.sh/api/report/v1/brazil/${searchDate}`
@@ -71,8 +81,9 @@ export const CardStatusContent = () => {
       setIsError(true);
       console.log("[specifiedDate_GET]: ", error);
     } finally {
-      console.log(statesFetch);
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 3000);
     }
   };
 
@@ -88,7 +99,9 @@ export const CardStatusContent = () => {
       setIsError(true);
       console.log("[specifiedDate_GET]: ", error);
     } finally {
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 3000);
     }
   };
 
@@ -108,17 +121,6 @@ export const CardStatusContent = () => {
     return new Intl.NumberFormat("pt-BR").format(number);
   };
 
-  if (isLoading) {
-    return (
-      <>
-        {statesFetch.map((data, index) => (
-          <div key={index} className="flex flex-col gap-4">
-            <Skeleton className="h-35 w-50" />
-          </div>
-        ))}
-      </>
-    );
-  }
   if (isError) {
     return (
       <div className="col-span-3">
@@ -131,13 +133,23 @@ export const CardStatusContent = () => {
     );
   }
 
-  if (Object.keys(statesFetch).length > 9) {
-    return (
+  if (Array.isArray(statesFetch) && statesFetch.length > 0) {
+    return isLoading ? (
+      <>
+        {statesFetch.map((data, index) => (
+          <div key={index} className="flex flex-col gap-4">
+            <Skeleton className="h-35 w-50" />
+          </div>
+        ))}
+      </>
+    ) : (
       <>
         {statesFetch.map((item, index) => (
-          <Card key={index} className=" gap-4 py-4">
+          <Card key={index} className=" gap-4 py-4 max-w-56">
             <CardHeader>
-              <CardTitle>{item.state || item.country}</CardTitle>
+              <CardTitle className="line-clamp-1">
+                {item.state || item.country}
+              </CardTitle>
             </CardHeader>
             <Separator />
             <CardContent className="flex flex-col gap-2">
@@ -179,56 +191,52 @@ export const CardStatusContent = () => {
     );
   } else if (!Array.isArray(statesFetch)) {
     return (
-      <>
-        <Card className="gap-4 py-4">
-          <CardHeader>
-            <CardTitle>{statesFetch.state}</CardTitle>
-          </CardHeader>
-          <Separator />
-          <CardContent className="flex flex-col gap-2">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <p className="flex items-center gap-2 hover:cursor-default hover:font-semibold">
-                    <SkullIcon className="size-4" color="red" />
-                    {handleNumberFormat(statesFetch.deaths)}
-                  </p>
-                </TooltipTrigger>
-                <TooltipContent side="left">
-                  <p>Mortes</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <p className="flex items-center gap-2 hover:cursor-default hover:font-semibold">
-                    <BiohazardIcon className="size-4" />
-                    {handleNumberFormat(
-                      statesFetch.cases +
-                        statesFetch.deaths +
-                        statesFetch.suspects
-                    )}
-                  </p>
-                </TooltipTrigger>
-                <TooltipContent side="left">
-                  <p>Total (Casos + Mortes + Suspeitos)</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </CardContent>
-        </Card>
-      </>
+      <Card className="gap-4 py-4 w-fit h-fit">
+        <CardHeader>
+          <CardTitle>{statesFetch.state}</CardTitle>
+        </CardHeader>
+        <Separator />
+        <CardContent className="flex flex-col gap-2">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <p className="flex items-center gap-2 hover:cursor-default hover:font-semibold">
+                  <SkullIcon className="size-4" color="red" />
+                  {handleNumberFormat(statesFetch.deaths)}
+                </p>
+              </TooltipTrigger>
+              <TooltipContent side="left">
+                <p>Mortes</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <p className="flex items-center gap-2 hover:cursor-default hover:font-semibold">
+                  <BiohazardIcon className="size-4" />
+                  {handleNumberFormat(
+                    statesFetch.cases +
+                      statesFetch.deaths +
+                      statesFetch.suspects
+                  )}
+                </p>
+              </TooltipTrigger>
+              <TooltipContent side="left">
+                <p>Total (Casos + Mortes + Suspeitos)</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <>
-      <div className="col-span-3">
-        <div className="flex items-center justify-center p-4">
-          <p className="text-sm text-muted-foreground">Dados indisponíveis</p>
-        </div>
+    <div className="col-span-3">
+      <div className="flex items-center justify-center p-4">
+        <p className="text-sm text-muted-foreground">Dados indisponíveis</p>
       </div>
-    </>
+    </div>
   );
 };

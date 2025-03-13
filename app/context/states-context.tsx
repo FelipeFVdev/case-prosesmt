@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-type StateData = {
+type StateFetchType = {
   state?: string;
   country?: string;
   deaths: number;
@@ -12,12 +12,12 @@ type StateData = {
 };
 
 // Create the context
-const StatesContext = createContext([]);
+const StatesContext = createContext<{ statesFetch: StateFetchType[] }>({
+  statesFetch: [],
+});
 
 export function StatesProvider({ children }: { children: React.ReactNode }) {
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [statesFetch, setStatesFetch] = useState([]);
+  const [statesFetch, setStatesFetch] = useState<StateFetchType[]>([]);
   useEffect(() => {
     // RETORNA TODOS OS ESTADOS DO BRAZIL
     const getStates = async () => {
@@ -28,10 +28,7 @@ export function StatesProvider({ children }: { children: React.ReactNode }) {
         const { data } = await res.json();
         setStatesFetch(data);
       } catch (error) {
-        setIsError(true);
         console.log("[states_GET]: ", error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -42,11 +39,6 @@ export function StatesProvider({ children }: { children: React.ReactNode }) {
     <StatesContext.Provider
       value={{
         statesFetch,
-        setStatesFetch,
-        isLoading,
-        setIsLoading,
-        isError,
-        setIsError,
       }}
     >
       {children}
