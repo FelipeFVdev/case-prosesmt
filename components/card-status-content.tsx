@@ -119,7 +119,7 @@ export const CardStatusContent = () => {
     ) : (
       <>
         {statesFetch.map((item, index) => (
-          <Card key={index} className=" gap-4 py-4 max-w-56">
+          <Card key={index} className=" gap-4 py-4 lg:max-w-56">
             <CardHeader>
               <CardTitle className="line-clamp-1">
                 {item.state || item.country}
@@ -166,7 +166,7 @@ export const CardStatusContent = () => {
   } else if (!Array.isArray(statesFetch)) {
     // Renderiza os dados de um único estado
     return (
-      <Card className="gap-4 py-4 w-52 h-fit">
+      <Card className="gap-4 py-4 lg:w-52 h-fit">
         <CardHeader>
           <CardTitle>{statesFetch.state}</CardTitle>
         </CardHeader>
